@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+
+  <title>Frontend Mentor | Advice generator app</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution {
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .attribution a {
+      color: hsl(228, 45%, 44%);
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone@7.10.3/babel.min.js" crossorigin></script>
+
+  <style>
+    body {
+      font-family: 'Manrope', sans-serif;
+      height: 100vh;
+      background-color: hsl(218, 23%, 16%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 288px;
+      width: 100%;
+      margin: auto;
+      padding: 2rem 2rem 6rem 2rem;
+      background-color: hsl(217, 19%, 24%);
+      font-size: 25px;
+      color: white;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-radius: 10px;
+    }
+
+    small {
+      display: block;
+      text-transform: uppercase;
+      margin: auto auto 1rem auto;
+      text-align: center;
+      font-size: 11px;
+      color: hsl(150, 100%, 66%);
+      letter-spacing: 2px;
+    }
+
+    .circle {
+      position: absolute;
+      bottom: -25px;
+      left: calc(50% - 21px);
+      background-color: hsl(150, 100%, 66%);
+      height: 48px;
+      width: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .circle:hover {
+      background-color: hsl(150, 92%, 47%);
+    }
+
+    .line {
+      position: absolute;
+      left: 9%;
+      bottom: 2.3rem;
+      z-index: 5;
+    }
+
+    @media (min-width: 768px) {
+      .line {
+        left: 17%;
+
+      }
+
+      .container {
+        min-width: 598px;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="root"></div>
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+    Coded by <a href="#">Vincenzo</a>.
+  </div>
+</body>
+<script type="text/babel" data-presets="react,stage-3">
+  const Example = () => {
+    const [advice, setAdvice] = React.useState("");
+    const [generator, setGenerator] = React.useState(true);
+    const [adviceNumber, setAdviceNumber] = React.useState("");
+
+    React.useEffect(() => {
+
+      fetch("https://api.adviceslip.com/advice")
+        .then((data) => data.json())
+        .then((data) => (setAdvice(data.slip.advice), setAdviceNumber(data.slip.id)))
+      setGenerator(false)
+    }, [generator === true])
+    const style = {
+      transform: generator ? 'scale(2)' : 'scale(1)',
+      transition: 'all 150ms ease', // smooth transition
+    }
+    return (
+      <blockquote className="container">
+        <small>Advice #{adviceNumber}</small>
+        “{advice}”
+
+        <div onClick={() => setGenerator(true)} style={style} className="circle">
+          <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 0H4a4.005 4.005 0 0 0-4 4v16a4.005 4.005 0 0 0 4 4h16a4.005 4.005 0 0 0 4-4V4a4.005 4.005 0 0 0-4-4ZM7.5 18a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm0-9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm4.5 4.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm4.5 4.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm0-9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z" fill="#202733" /></svg>
+        </div>
+        {window.innerWidth > 700 ?
+          <svg className="line" width="444" height="16" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" fill-rule="evenodd"><path fill="#4F5D74" d="M0 8h196v1H0zM248 8h196v1H248z" /><g transform="translate(212)" fill="#CEE3E9"><rect width="6" height="16" rx="3" /><rect x="14" width="6" height="16" rx="3" /></g></g></svg>
+          : <svg className="line" width="295" height="16" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#4F5D74" d="M0 8h122v1H0zM173 8h122v1H173z" /><g transform="translate(138)" fill="#CEE3E9"><rect width="6" height="16" rx="3" /><rect x="14" width="6" height="16" rx="3" /></g></g></svg>}
+      </blockquote>
+    );
+  };
+  const root = ReactDOM.createRoot(document.getElementById("root"))
+  root.render(<Example />);
+</script>
+
+</html>
